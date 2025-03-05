@@ -33,6 +33,18 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
           required: ["a", "b"],
         },
       },
+      {
+        name: "calculate_subtract",
+        description: "Subtract two numbers",
+        inputSchema: {
+          type: "object",
+          properties: {
+            a: { type: "number" },
+            b: { type: "number" },
+          },
+          required: ["a", "b"],
+        },
+      },
     ],
   };
 });
@@ -41,6 +53,10 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   if (request.params.name === "calculate_sum") {
     const args = request.params.arguments as { a: number; b: number };
     return { toolResult: args.a + args.b };
+  }
+  if (request.params.name === "calculate_subtract") {
+    const args = request.params.arguments as { a: number; b: number };
+    return { toolResult: args.a - args.b };
   }
   throw new McpError(404, "Tool not found");
 });
